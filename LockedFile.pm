@@ -3,7 +3,7 @@ package IO::LockedFile;
 use strict;
 use vars qw($VERSION @ISA);
 
-$VERSION = 0.22;
+$VERSION = 0.23;
 
 use IO::File;
 @ISA = ("IO::File"); # subclass of IO::File
@@ -124,7 +124,7 @@ sub unlock {
 sub close {
     my $self = shift;
     # if the file was opened - unlock it
-    $self->unlock if $self->opened;
+    $self->unlock() if ($self->opened() and $self->have_lock());
     $self->SUPER::close();
 } # of close
 

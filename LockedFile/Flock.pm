@@ -32,9 +32,8 @@ sub lock {
 ######################
 sub unlock {
     my $self = shift;
-
-    flock($self, LOCK_UN)
-        or croak( ref( $self ) . ": Cannot unlock: $!");
+    flock($self, LOCK_UN);
+#        or croak( ref( $self ) . ": Cannot unlock: $!");
     $self->SUPER::unlock;
 }
 
