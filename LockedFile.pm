@@ -3,7 +3,7 @@ package IO::LockedFile;
 use strict;
 use vars qw($VERSION @ISA);
 
-$VERSION = 0.2;
+$VERSION = 0.21;
 
 use IO::File;
 @ISA = ("IO::File"); # subclass of IO::File
@@ -32,14 +32,13 @@ sub new {
     my $options = {};
     $options = shift if ref($_[0]) eq 'HASH';
 
-    if( exists $options->{ scheme } )
-    {
+    if ( exists $options->{ scheme } ) {
         # User-specified scheme (may have to load it)
         $class = join( '::', __PACKAGE__, $options->{ scheme } );
         eval "require $class";
         croak "Unable to load $class: $@" if $@;
     }
-    elsif( $class eq __PACKAGE__ ) {
+    elsif ( $class eq __PACKAGE__ ) {
         # User didn't specify anything (or subclass), so do it for her
         $class .= '::' . get_scheme( $class );
     }
@@ -64,11 +63,11 @@ sub open {
     my $self = shift;
 
     my $writable = 0;
-    if( scalar @_ == 1 ) {
+    if ( scalar(@_) == 1 ) {
         # Perl mode. Look at first character
 
         # Quick sanity check. We can't lock a pipe
-        if(( substr( $_[0],  0, 1 ) eq '|' ) || 
+        if (( substr( $_[0],  0, 1 ) eq '|' ) || 
            ( substr( $_[0], -1, 1 ) eq '|' ) ) {
             croak "Cannot lock a pipe"
         }
@@ -76,12 +75,12 @@ sub open {
         # OK, now look at first character
         $writable = substr( $_[0], 0, 1 ) eq '>';
     }
-    elsif( $_[1] =~ /^\d+$/ ) {
+    elsif ( $_[1] =~ /^\d+$/ ) {
         # Numeric mode
         require Fcntl;
-        $writable = ( ( $_[1] | O_APPEND ) ||
-                      ( $_[1] | O_CREAT  ) ||
-                      ( $_[1] | O_TRUNC  ) );
+        $writable = ( ( $_[1] & O_APPEND ) ||
+                      ( $_[1] & O_CREAT  ) ||
+                      ( $_[1] & O_TRUNC  ) );
     }
     else {
         # POSIX mode (we know there were enough parameters since our
@@ -90,12 +89,11 @@ sub open {
     }
 
     $self->_set_writable( $writable );
-
     # call open of the super class (IO::File) with the rest of the parameters
     $self->SUPER::open(@_) or return undef;
 
-    if( $self->should_lock ) {
-        $self->lock or return undef;
+    if ( $self->should_lock() ) {
+        $self->lock() or return undef;
     }
 
     return 1;
@@ -109,17 +107,16 @@ sub lock {
 
     $self->_set_locked( 1 );
     return 1;
-}
+} # of lock
 
 ########################
 # unlock
 ########################
 sub unlock {
     my $self = shift;
-
     $self->_set_locked( 0 );
     return 1;
-}
+} # of unlock
 
 ########################
 # close
@@ -136,7 +133,6 @@ sub close {
 #######################
 sub have_lock {
     my $self = shift;
-
     return $self->_get_option( '_locked' );
 } # of have_lock
 
@@ -144,7 +140,7 @@ sub have_lock {
 # _set_locked
 #######################
 sub _set_locked {
-    my( $self, $value ) = @_;
+    my ( $self, $value ) = @_;
     return $self->_set_option( '_locked', $value );
 } # of _set_locked
 
@@ -160,7 +156,7 @@ sub is_writable {
 # _set_writable
 #######################
 sub _set_writable {
-    my( $self, $value ) = @_;
+    my ( $self, $value ) = @_;
     return $self->_set_option( '_writable', $value );
 } # of _set_writable
 
@@ -184,12 +180,12 @@ sub should_lock {
 # print
 #######################
 sub print {
-    my( $self, @args ) = @_;
+    my ( $self, @args ) = @_;
 
-    my $was_locked = $self->have_lock;
+    my $was_locked = $self->have_lock();
 
-    if( ! $was_locked ) {
-	return 0 unless $self->lock;
+    if ( ! $was_locked ) {
+	return 0 unless $self->lock();
     }
     my $rc = $self->SUPER::print( @args );
     $self->unlock unless $was_locked;
@@ -201,15 +197,15 @@ sub print {
 # truncate
 #######################
 sub truncate {
-    my( $self, @args ) = @_;
+    my ( $self, @args ) = @_;
 
-    my $was_locked = $self->have_lock;
+    my $was_locked = $self->have_lock();
 
-    if( ! $was_locked ) {
-	return 0 unless $self->lock;
+    if ( ! $was_locked ) {
+	return 0 unless $self->lock();
     }
     my $rc = $self->SUPER::truncate( @args );
-    $self->unlock unless $was_locked;
+    $self->unlock() unless $was_locked;
 
     return $rc;
 } # of truncate
@@ -239,20 +235,19 @@ sub _get_option {
     my( $self, $key ) = @_;
 
     # Is the option set here?
-    if( exists $Options{ $self } && exists $Options{ $self }->{ $key } ) {
+    if ( exists $Options{ $self } && exists $Options{ $self }->{ $key } ) {
         return $Options{ $self }->{ $key }
     }
     # If we're an object, check out class
-    elsif( ref( $self ) ) {
+    elsif ( ref( $self ) ) {
         return _get_option( ref( $self ), $key );
     }
     # If we're a class other than this one, check defaults
-    elsif( $self ne __PACKAGE__ ) {
+    elsif ( $self ne __PACKAGE__ ) {
         return _get_option( __PACKAGE__, $key );
     }
     # It's nowhere. Probably a typo
-    else
-    {
+    else {
         croak "Bad option fetch: $key\n";
     }
 } # of _get_option
@@ -263,7 +258,7 @@ sub _get_option {
 sub _set_option {
     my( $self, %hash ) = @_;
 
-    while( my( $key, $value ) = each %hash ) {
+    while ( my( $key, $value ) = each %hash ) {
         $Options{ $self }->{ $key } = $value;
     }
 } # of _set_option
@@ -274,7 +269,7 @@ sub _set_option {
 sub import {
     my $pkg = shift;
     my( %config );
-    if( @_ == 1 ) {
+    if ( @_ == 1 ) {
 	$config{ scheme } = shift;
     }
     else {

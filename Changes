@@ -1,7 +1,10 @@
 Revision history for Perl extension IO::LockedFile.
 
-0.1   Fri Feb  9 15:21:28 CET 2001
-	- First distribution on CPAN
+0.21  Thu May 16 09:40:16 CEST 2002
+	- Thanks to Ho Ming Shun who found and patched a bug in the open
+          method. The bug occured when numeric mode was used, the opened 
+          file would be locked exclusively always. 
+        - The test.pl was re-written to add some more tests.
 
 0.2   Mon Apr  2 14:30:31 CEST 2001
 	- Many changes due to the great contribution of Rob Napier: 
@@ -14,4 +17,7 @@ Revision history for Perl extension IO::LockedFile.
 	  to write and supplying this information to the lock method
 	  (so for example shared lock can be used on files that are
 	  read), print method, and truncate method.
-	  
+
+0.1   Fri Feb  9 15:21:28 CET 2001
+	- First distribution on CPAN
+

@@ -11,11 +11,11 @@ use vars qw( @ISA );
 sub lock {
     my $self = shift;
 
-    my $lock_type = $self->is_writable ? LOCK_EX : LOCK_SH;
+    my $lock_type = $self->is_writable() ? LOCK_EX : LOCK_SH;
 
     my $got_lock = 0;
 
-    if( ! $self->should_block ) {
+    if ( ! $self->should_block() ) {
         $got_lock = flock( $self, $lock_type | LOCK_NB );
     }
     else {
@@ -23,8 +23,7 @@ sub lock {
             or croak( "Cannot lock: $!");
     }
 
-    $self->SUPER::lock if $got_lock;
-
+    $self->SUPER::lock() if ($got_lock);
     return $got_lock;
 }
 

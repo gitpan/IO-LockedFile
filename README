@@ -43,9 +43,13 @@ INSTALLATION
 
 AUTHOR NOTES
 
-  This class is used for quite a long time in our company
-  EM-TECH. Yet, it is very new in CPAN. If there are problems,
-  suggestions or comments - please email me.
+  After I wrote the first version of this module that was extremely simple, 
+  I found out that actually my knowledge in locking files was quite poor. 
+  Yet, with the help of some great people, the module became (hopefully) 
+  better. 
+
+  This is why I would like to ask you for help when you see bugs, mistakes 
+  or just if you have any suggestions or comments - please email me.
 
 Rani Pinchuk
 rani@cpan.org
