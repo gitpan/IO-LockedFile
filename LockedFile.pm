@@ -3,7 +3,7 @@ package IO::LockedFile;
 use strict;
 use vars qw($VERSION @ISA);
 
-$VERSION = 0.21;
+$VERSION = 0.22;
 
 use IO::File;
 @ISA = ("IO::File"); # subclass of IO::File
@@ -548,7 +548,7 @@ Rob Napier, rnapier@employees.org
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001 EM-TECH (www.em-tech.net) & Rani Pinchuk. 
+Copyright (c) 2001-2002 Ockham Technology N.V. & Rani Pinchuk. 
 All rights reserved.  
 This package is free software; you can redistribute it and/or modify 
 it under the same terms as Perl itself.

@@ -66,7 +66,7 @@ Rob Napier, rnapier@employees.org
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001 EM-TECH (www.em-tech.net) & Rani Pinchuk. 
+Copyright (c) 2001-2002 Ockham Technology N.V. & Rani Pinchuk. 
 All rights reserved.  
 This package is free software; you can redistribute it and/or modify 
 it under the same terms as Perl itself.
@@ -77,6 +77,13 @@ L<IO::File(3)>,
 L<IO::LockedFile(3)>
 
 =cut
+
+
+
+
+
+
+
 
 
 

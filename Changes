@@ -1,5 +1,8 @@
 Revision history for Perl extension IO::LockedFile.
 
+0.22  Tue Sep 24 14:11:39 CEST 2002
+	- Just fixed the copyright notice.  
+
 0.21  Thu May 16 09:40:16 CEST 2002
 	- Thanks to Ho Ming Shun who found and patched a bug in the open
           method. The bug occured when numeric mode was used, the opened 
