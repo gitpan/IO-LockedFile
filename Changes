@@ -1,4 +1,17 @@
 Revision history for Perl extension IO::LockedFile.
 
 0.1   Fri Feb  9 15:21:28 CET 2001
-	- first distribution on CPAN
+	- First distribution on CPAN
+
+0.2   Mon Apr  2 14:30:31 CEST 2001
+	- Many changes due to the great contribution of Rob Napier: 
+	  The class became abstract where classes in the directory
+	  LockedFile implements it. This way new schemes other then
+	  Flock can be introduced. The interface was extended as a
+	  result of that, and the options hash was introduced. Among
+	  the new features: opening a file that is not yet locked,
+	  blocking & unblocking locks, checking if the file is opened
+	  to write and supplying this information to the lock method
+	  (so for example shared lock can be used on files that are
+	  read), print method, and truncate method.
+	  

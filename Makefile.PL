@@ -7,4 +7,6 @@ WriteMakefile(
     'PREREQ_PM' => {
 	IO::File => undef,
 	Fcntl => undef },
+    'PM' => {'LockedFile.pm'       => '$(INST_LIBDIR)/LockedFile.pm', 
+             'LockedFile/Flock.pm' => '$(INST_LIBDIR)/LockedFile/Flock.pm'},
 );

@@ -1,6 +1,7 @@
 Changes
 LockedFile.pm
-Makefile.PL
+LockedFile/Flock.pm
 MANIFEST
-test.pl
+Makefile.PL
 README
+test.pl
